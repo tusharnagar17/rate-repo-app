@@ -1,9 +1,14 @@
 import React from "react";
-import { StyleSheet, FlatList, View, Image } from "react-native";
+import { StyleSheet, FlatList, View, Image, Text } from "react-native";
 
 const style = StyleSheet.create({
   separator: {
     height: 10,
+  },
+  image: {
+    width: 60,
+    height: 50,
+    margin: 5,
   },
 });
 
@@ -54,31 +59,79 @@ const repositories = [
   },
 ];
 
-const renderItem = ({ item }) => {
-  return (
-    <View>
-      <Image source={{ uri: item.ownerAvatarUrl }} />
-      <Text>{item.fullname}</Text>
-      <Text>{item.description}</Text>
-      <Text>{item.language}</Text>
-      <Text>{item.forksCount}</Text>
-      <Text>{item.stargazersCount}</Text>
-      <Text>{item.ratingAverage}</Text>
-      <Text>{item.reviewCount}</Text>
-    </View>
-  );
-};
-
 const ItemSeparator = () => <View style={style.separator}></View>;
 
 const RepositoryLists = () => {
-  return;
-  <FlatList
-    data={repositories}
-    ItemSeparatorComponent={ItemSeparator}
-    renderItem={renderItem}
-  />;
-  // use flat list here
+  const InK = (data) => {
+    const newNumber = (data / 1000).toFixed(1);
+    return newNumber;
+  };
+  const renderItem = ({ item }) => {
+    return (
+      <View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            padding: 10,
+          }}
+        >
+          <Image style={style.image} source={{ uri: item.ownerAvatarUrl }} />
+          <View style={{ paddingLeft: 20 }}>
+            <Text style={{ fontSize: 22 }}>{item.fullName}</Text>
+            <Text style={{ color: "grey" }}>{item.description}</Text>
+            <Text
+              style={{
+                margin: 2,
+                backgroundColor: "#059fdc",
+                borderRadius: 20,
+                padding: 10,
+                fontSize: 20,
+                width: "auto",
+              }}
+            >
+              {item.language}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-around",
+          }}
+        >
+          <Text>{InK(item.forksCount)}</Text>
+          <Text>{InK(item.stargazersCount)}</Text>
+          <Text>{item.ratingAverage}</Text>
+          <Text>{item.reviewCount}</Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-around",
+            paddingLeft: 10,
+          }}
+        >
+          <Text>Forks</Text>
+          <Text>Stars</Text>
+          <Text>Rating</Text>
+          <Text>Reviews</Text>
+        </View>
+      </View>
+    );
+  };
+  const renderItemTest = ({ item }) => {
+    return <Text>item is here {item.title}</Text>;
+  };
+  return (
+    <FlatList
+      data={repositories}
+      ItemSeparatorComponent={ItemSeparator}
+      renderItem={renderItem}
+    />
+  );
 };
 
 export default RepositoryLists;
